@@ -9,6 +9,7 @@ function Editor({ imageFile }) {
 
   const [radius, setRadius] = useState(5);
   const [shadowSize, setShadowSize] = useState(5);
+  const [borderWidth, setBorderWidth] = useState(5);
 
   return (
     <div>
@@ -32,6 +33,16 @@ function Editor({ imageFile }) {
             min="0"
           />
         </label>
+
+        <label>
+          Border width:{" "}
+          <input
+            type="number"
+            value={borderWidth}
+            onChange={e => setBorderWidth(e.target.value)}
+            min="0"
+          />
+        </label>
       </div>
 
       <div
@@ -47,7 +58,7 @@ function Editor({ imageFile }) {
         <div
           style={{
             width: "100%",
-            border: "5px solid white",
+            border: `${borderWidth}px solid white`,
             borderRadius: `${radius}px`,
             boxShadow: `0 0 ${shadowSize}px black`,
             lineHeight: 0,
