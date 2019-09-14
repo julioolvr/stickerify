@@ -6,8 +6,33 @@ function Editor({ imageFile }) {
   const [stickerUrl, setStickerUrl] = useState(null);
   const stickerElement = useRef();
 
+  const [radius, setRadius] = useState(5);
+  const [shadowSize, setShadowSize] = useState(5);
+
   return (
     <div>
+      <div>
+        <label>
+          Radius:{" "}
+          <input
+            type="number"
+            value={radius}
+            onChange={e => setRadius(e.target.value)}
+            min="0"
+          />
+        </label>
+
+        <label>
+          Shadow size:{" "}
+          <input
+            type="number"
+            value={shadowSize}
+            onChange={e => setShadowSize(e.target.value)}
+            min="0"
+          />
+        </label>
+      </div>
+
       <div
         ref={stickerElement}
         style={{
@@ -22,9 +47,10 @@ function Editor({ imageFile }) {
           style={{
             width: "100%",
             border: "5px solid white",
-            borderRadius: "5px",
-            boxShadow: "0 0 3px black",
-            lineHeight: 0
+            borderRadius: `${radius}px`,
+            boxShadow: `0 0 ${shadowSize}px black`,
+            lineHeight: 0,
+            overflow: "hidden"
           }}
         >
           {url && <img style={{ width: "100%" }} src={url} />}
