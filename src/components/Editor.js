@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import domtoimage from "dom-to-image";
+import { saveAs } from "file-saver";
 
 function Editor({ imageFile }) {
   const url = imageFile ? URL.createObjectURL(imageFile) : null;
@@ -56,6 +57,7 @@ function Editor({ imageFile }) {
           {url && <img style={{ width: "100%" }} src={url} />}
         </div>
       </div>
+
       <button
         onClick={() =>
           domtoimage
@@ -65,7 +67,13 @@ function Editor({ imageFile }) {
       >
         Do something
       </button>
+
       {stickerUrl && <img src={stickerUrl} />}
+      {stickerUrl && (
+        <button onClick={() => saveAs(stickerUrl, "sticker.png")}>
+          Download
+        </button>
+      )}
     </div>
   );
 }
