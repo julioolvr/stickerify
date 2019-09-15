@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
 
@@ -11,12 +11,20 @@ function Editor({ imageFile }) {
   const [stickerUrl, setStickerUrl] = useState(null);
   const stickerElement = useRef();
 
-  const [radius, setRadius] = useState(5);
-  const [shadowSize, setShadowSize] = useState(5);
-  const [borderWidth, setBorderWidth] = useState(5);
-  const [rotation, setRotation] = useState(10);
+  const initialSettings = readSettingsFromHash();
+
+  const [radius, setRadius] = useState(initialSettings.radius || 5);
+  const [shadowSize, setShadowSize] = useState(initialSettings.shadowSize || 5);
+  const [borderWidth, setBorderWidth] = useState(
+    initialSettings.borderWidth || 5
+  );
+  const [rotation, setRotation] = useState(initialSettings.rotation || 10);
 
   const xScale = SIDE / rotatedWidth(SIDE, rotation);
+
+  useEffect(() => {
+    setSettingsInHash({ radius, shadowSize, borderWidth, rotation });
+  }, [radius, shadowSize, borderWidth, rotation]);
 
   return (
     <div>
@@ -110,3 +118,25 @@ function Editor({ imageFile }) {
 }
 
 export default Editor;
+
+function setSettingsInHash(settings) {
+  window.history.pushState(
+    undefined,
+    undefined,
+    "#" +
+      Object.keys(settings)
+        .map(setting => `${setting}=${settings[setting]}`)
+        .join("&")
+  );
+}
+
+function readSettingsFromHash() {
+  return window.location.hash
+    .substring(1)
+    .split("&")
+    .reduce((settings, keyVal) => {
+      const [key, value] = keyVal.split("=");
+      settings[key] = value;
+      return settings;
+    }, {});
+}
