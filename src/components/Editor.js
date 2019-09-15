@@ -11,7 +11,7 @@ function Editor({ imageFile }) {
   const [stickerUrl, setStickerUrl] = useState(null);
   const stickerElement = useRef();
 
-  const initialSettings = readSettingsFromHash();
+  const initialSettings = readSettings();
 
   const [radius, setRadius] = useState(initialSettings.radius || 5);
   const [shadowSize, setShadowSize] = useState(initialSettings.shadowSize || 5);
@@ -23,7 +23,7 @@ function Editor({ imageFile }) {
   const xScale = SIDE / rotatedWidth(SIDE, rotation);
 
   useEffect(() => {
-    setSettingsInHash({ radius, shadowSize, borderWidth, rotation });
+    saveSettings({ radius, shadowSize, borderWidth, rotation });
   }, [radius, shadowSize, borderWidth, rotation]);
 
   return (
@@ -119,6 +119,18 @@ function Editor({ imageFile }) {
 
 export default Editor;
 
+function saveSettings(settings) {
+  setSettingsInHash(settings);
+  setSettingsInLocalStorage(settings);
+}
+
+function readSettings() {
+  return {
+    ...readSettingsFromLocalStorage(),
+    ...readSettingsFromHash()
+  };
+}
+
 function setSettingsInHash(settings) {
   window.history.pushState(
     undefined,
@@ -130,13 +142,29 @@ function setSettingsInHash(settings) {
   );
 }
 
+const LOCAL_STORAGE_KEY = "STICKER_SETTINGS";
+
+function setSettingsInLocalStorage(settings) {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(settings));
+}
+
 function readSettingsFromHash() {
   return window.location.hash
     .substring(1)
     .split("&")
     .reduce((settings, keyVal) => {
       const [key, value] = keyVal.split("=");
-      settings[key] = value;
+      settings[key] = Number(value);
       return settings;
     }, {});
+}
+
+function readSettingsFromLocalStorage() {
+  const contents = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+  try {
+    return JSON.parse(contents);
+  } catch {
+    return {};
+  }
 }
