@@ -5,9 +5,15 @@
   "dependencies": {
     "dom-to-image": "^2.6.0",
     "file-saver": "^2.0.2",
+    "husky": "^3.0.7",
+    "lint-staged": "^9.4.0",
+    "prettier": "^1.18.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -28,6 +34,17 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write",
+      "git add"
     ]
   }
 }
