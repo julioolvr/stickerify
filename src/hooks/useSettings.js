@@ -59,6 +59,7 @@ function readSettingsFromHash() {
   return window.location.hash
     .substring(1)
     .split("&")
+    .filter(part => part !== "")
     .reduce((settings, keyVal) => {
       const [key, value] = keyVal.split("=");
       settings[key] = Number(value);
@@ -68,6 +69,10 @@ function readSettingsFromHash() {
 
 function readSettingsFromLocalStorage() {
   const contents = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+  if (!contents) {
+    return {};
+  }
 
   try {
     return JSON.parse(contents);
