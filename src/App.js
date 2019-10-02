@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 
+import useSettings from "./hooks/useSettings";
+import FileSelector from "./components/FileSelector";
 import Editor from "./components/Editor";
 
 function App() {
   const [image, setImage] = useState(null);
+  const [settings, setSettings] = useSettings();
 
   return (
     <div>
-      <input type="file" onChange={e => setImage(e.target.files[0])} />
-      <Editor imageFile={image} />
+      <Editor imageFile={image} settings={settings} onChange={setSettings} />
+      <FileSelector onFileSelected={file => setImage(file)} />
     </div>
   );
 }
