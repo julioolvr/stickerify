@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 
 import useSettings from "./hooks/useSettings";
-import FileSelector from "./components/FileSelector";
 import Editor from "./components/Editor";
 
 function App() {
-  const [image, setImage] = useState(null);
   const [settings, setSettings] = useSettings();
 
   return (
-    <div>
-      <Editor imageFile={image} settings={settings} onChange={setSettings} />
-      <FileSelector onFileSelected={file => setImage(file)} />
+    <div className="w-screen min-h-screen bg-orange-200">
+      <h1 className="text-center text-xl">Stickers!</h1>
+      <Editor settings={settings} onChange={setSettings} />
     </div>
   );
 }
