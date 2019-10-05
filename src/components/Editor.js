@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Sticker from "./Editor/Sticker";
 import Configuration from "./Editor/Configuration";
 
 function Editor({ settings, onChange }) {
-  return (
-    <div>
-      <Sticker settings={settings} />
+  const [activeSticker, setActiveSticker] = useState(false);
 
-      <Configuration
+  return (
+    <div className="flex flex-col justify-between flex-grow">
+      <Sticker
         settings={settings}
-        onSettingsChange={updatedSetting =>
-          onChange({ ...settings, ...updatedSetting })
-        }
+        onSelectFile={() => setActiveSticker(true)}
       />
+
+      {activeSticker && (
+        <Configuration
+          settings={settings}
+          onSettingsChange={updatedSetting =>
+            onChange({ ...settings, ...updatedSetting })
+          }
+        />
+      )}
     </div>
   );
 }

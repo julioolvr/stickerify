@@ -2,19 +2,24 @@ import React, { useRef, useState } from "react";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
 
-import FileSelector from "../../components/FileSelector";
+import FileSelector from "./Sticker/FileSelector";
 import Preview from "./Sticker/Preview";
 
 const SIDE = 512;
 
-function Sticker({ settings }) {
+function Sticker({ settings, onSelectFile }) {
   const stickerElement = useRef();
   const [image, setImage] = useState(null);
   const url = image ? URL.createObjectURL(image) : null;
 
   return (
     <>
-      <FileSelector onFileSelected={file => setImage(file)} />
+      <FileSelector
+        onFileSelected={file => {
+          setImage(file);
+          onSelectFile();
+        }}
+      />
       {url && <Preview imageUrl={url} settings={settings} side={SIDE} />}
 
       <button
