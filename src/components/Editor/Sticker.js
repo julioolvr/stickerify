@@ -2,6 +2,9 @@ import React, { useRef, useState } from "react";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
 
+import Button from "../Button";
+import classNames from "../../utils/classNames";
+
 import FileSelector from "./Sticker/FileSelector";
 import Preview from "./Sticker/Preview";
 
@@ -14,28 +17,47 @@ function Sticker({ settings, onSelectFile }) {
 
   return (
     <>
-      <FileSelector
-        onFileSelected={file => {
-          setImage(file);
-          onSelectFile();
-        }}
-      />
-      {url && <Preview imageUrl={url} settings={settings} side={SIDE} />}
+      {url && (
+        <Preview
+          ref={stickerElement}
+          imageUrl={url}
+          settings={settings}
+          side={SIDE}
+        />
+      )}
 
-      <button
-        disabled={!image}
-        onClick={() =>
-          domtoimage
-            .toPng(stickerElement.current, {
-              // TODO: Maybe pad by shadowSize * xScale?
-              // Or maybe wrap in a huge element, convert to PNG and trim and resize?
-              style: { height: SIDE, width: SIDE }
-            })
-            .then(stickerUrl => saveAs(stickerUrl, "sticker.png"))
-        }
+      <div
+        className={classNames({
+          "flex justify-around my-4": true,
+          "flex-grow": !image
+        })}
       >
-        Download
-      </button>
+        {image && (
+          <Button
+            className="mx-2"
+            disabled={!image}
+            onClick={() =>
+              domtoimage
+                .toPng(stickerElement.current, {
+                  // TODO: Maybe pad by shadowSize * xScale?
+                  // Or maybe wrap in a huge element, convert to PNG and trim and resize?
+                  style: { height: SIDE, width: SIDE }
+                })
+                .then(stickerUrl => saveAs(stickerUrl, "sticker.png"))
+            }
+          >
+            Download
+          </Button>
+        )}
+
+        <FileSelector
+          className="mx-2"
+          onFileSelected={file => {
+            setImage(file);
+            onSelectFile();
+          }}
+        />
+      </div>
     </>
   );
 }

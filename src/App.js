@@ -8,7 +8,6 @@ function App() {
 
   return (
     <div className="w-screen min-h-screen bg-orange-200 flex flex-col">
-      <h1 className="text-center text-xl">Stickers!</h1>
       <Editor settings={settings} onChange={setSettings} />
     </div>
   );
