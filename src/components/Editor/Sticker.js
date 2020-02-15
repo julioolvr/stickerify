@@ -5,8 +5,8 @@ import { saveAs } from "file-saver";
 import Button from "../Button";
 import classNames from "../../utils/classNames";
 
-import FileSelector from "./Sticker/FileSelector";
-import Preview from "./Sticker/Preview";
+import FileSelector from "./FileSelector";
+import Preview from "./Preview";
 
 const SIDE = 512;
 

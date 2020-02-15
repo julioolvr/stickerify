@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { buttonStyles } from "../../Button";
-import classNames from "../../../utils/classNames";
+import { buttonStyles } from "../Button";
+import classNames from "../../utils/classNames";
 
 function FileSelector({ onFileSelected, className }) {
   const [fileSelected, setFileSelected] = useState(false);
